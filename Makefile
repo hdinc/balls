@@ -20,7 +20,7 @@ keystore : $(KEYSTOREFILE)
 $(KEYSTOREFILE) :
 	keytool -genkey -v -keystore $(KEYSTOREFILE) -alias $(ALIASNAME) -keyalg RSA -keysize 2048 -validity 10000 -storepass $(STOREPASS) -keypass $(STOREPASS) -dname $(DNAME)
 
-build/makecapk/lib/arm64-v8a/libballs.so :
+build/makecapk/lib/arm64-v8a/libballs.so : build/src/libballs.so
 	mkdir -p build/makecapk/lib/arm64-v8a
 	cp build/src/libballs.so build/makecapk/lib/arm64-v8a/
 
@@ -41,5 +41,12 @@ build/makecapk.apk : $(TARGETS)
 clean :
 	rm -rf build/temp.apk build/makecapk.apk build/makecapk build/$(APKFILE)
 
+install: build/makecapk.apk
+	adb install build/$(APKFILE)
+
+build/src/libballs.so :
+	make -C build
+
+.PHONY: build/src/libballs.so
 
 .PHONY: clean
