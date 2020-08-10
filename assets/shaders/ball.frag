@@ -1,7 +1,7 @@
 #version 300 es
-uniform vec4 color;
+uniform vec4 COLOR;
 out vec4 c;
 
 void main() {
-    c = color;
+    c = COLOR;
 }

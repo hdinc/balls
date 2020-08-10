@@ -36,8 +36,8 @@ void ball::draw()
     model = glm::scale(model, glm::vec3(radius, radius, 1.f));
     MVP = *projection * model;
     glUniformMatrix4fv(mvp, 1, GL_FALSE, glm::value_ptr(MVP));
-    glBufferSubData(GL_ARRAY_BUFFER, 206 * sizeof(float), 2 * sizeof(float),
-        glm::value_ptr(speed));
+    glBufferSubData(
+        GL_ARRAY_BUFFER, 206 * sizeof(float), 2 * sizeof(float), glm::value_ptr(speed));
     glUniform4f(color, c.x, c.y, c.z, c.w);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 102);
     glUniform4f(color, 0, 0, 1, 1.f);
@@ -48,7 +48,7 @@ void ball::draw()
 void ball::initgldata()
 {
     mvp = glGetUniformLocation(shader->Id(), "MVP");
-    color = glGetUniformLocation(shader->Id(), "color");
+    color = glGetUniformLocation(shader->Id(), "COLOR");
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
     glGenBuffers(1, &vbo);
