@@ -5,8 +5,22 @@
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
 #include <android_native_app_glue.h>
+#include <EGL/egl.h>
 #include <android/log.h>
 #include <string.h>
+
+struct engine {
+    struct android_app* app;
+
+    EGLDisplay display;
+    EGLSurface surface;
+    EGLContext context;
+    int32_t width;
+    int32_t height;
+    int animating;
+};
+
+extern engine engine;
 
 static const char* GetFile(const char* filename);
 
@@ -85,11 +99,11 @@ static const char* GetFile(const char* filename)
 {
 
     AAsset* file = AAssetManager_open(
-        gapp->activity->assetManager, filename, AASSET_MODE_BUFFER);
+        engine.app->activity->assetManager, filename, AASSET_MODE_BUFFER);
 
     if (!file) {
-        __android_log_print(ANDROID_LOG_ERROR, "shader",
-            "could not open asset file: %s", filename);
+        __android_log_print(
+            ANDROID_LOG_ERROR, "shader", "could not open asset file: %s", filename);
         exit(1);
     }
 
